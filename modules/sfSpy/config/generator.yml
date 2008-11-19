@@ -1,0 +1,37 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      sfSpyObserver
+    theme:            default
+    
+    fields:
+      created_at:   { name: Started on }
+      duration_formatted: { name: Duration }
+      
+    list:
+      title:        Recorded sessions list
+      display:      [name, session_id, is_active, created_at, duration_formatted, nb_events]
+      fields:
+        is_active:  { name: Active }
+      object_actions:
+        replay:     { name: Replay, action: replay, icon: /sfSpyPlugin/images/film.png }
+        edit:       { name: Edit, action: edit, icon: /sfSpyPlugin/images/film_edit.png }
+        delete:     { name: Delete, action: delete, icon: /sfSpyPlugin/images/film_delete.png, params: confirm=Are you sure? }
+      filters:      [name, created_at]
+      actions:
+        viewSessions: { name: View Current Sessions, action: listSessions, icon: /sfSpyPlugin/images/page_white_go.png  }
+        
+    edit:
+      title:        Recorded session details
+      display:      [name, session_id, created_at, duration_formatted, _events]
+      fields:
+        name:       { help: Type a name for reference }
+        session_id: { type: plain }
+        created_at: { type: plain }
+        duration_formatted: { type: plain }
+        latest_url: { type: plain }
+      actions:
+        _save:      { name: Save }
+        _list:      { name: List }
+        replay:     { name: Replay, action: replay, icon: /sfSpyPlugin/images/film.png }
+        _delete:    { name: Delete }

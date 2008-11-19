@@ -1,0 +1,38 @@
+propel:
+  _attributes: { package: plugins.sfSpyPlugin.lib.model }
+  sf_spy_session:
+    _attributes: { phpName: sfSpySession }
+    sess_id:     { type: varchar(255), primaryKey: true }
+    sess_data:   longvarchar
+    sess_time:   timestamp
+    
+  sf_spy_observer:
+    _attributes: { phpName: sfSpyObserver }
+    id:
+    session_id:  type: varchar(255)
+    is_active:   boolean
+    is_live:     boolean
+    name:        varchar(255)
+    nb_events:   integer
+    duration:    integer
+    updated_at:
+    created_at:
+    
+  sf_spy_event:
+    _attributes: { phpName: sfSpyEvent }
+    id:
+    observer_id: { type: integer, foreignTable: sf_spy_observer, foreignReference: id, onDelete: cascade, required: true, primaryKey: true }
+    type:        varchar(100)
+    details:     varchar(255)
+    created_at:
+    _uniques:
+      event_at: [observer_id, created_at, type]
+  
+  sf_spy_page:
+    _attributes: { phpName: sfSpyPage }
+    observer_id: { type: integer, foreignTable: sf_spy_observer, foreignReference: id, onDelete: cascade, required: true, primaryKey: true }
+    created_at:  { type: timestamp, primaryKey: true }
+    url:         varchar(255)
+    html:        longvarchar
+    is_read:     { type: boolean, default: false }
+    

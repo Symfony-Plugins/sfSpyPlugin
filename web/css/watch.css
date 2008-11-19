@@ -1,0 +1,83 @@
+#watch_box
+{
+  position:     fixed;
+  width:        700px;
+  bottom:       15px;
+  left:         15px;
+  right:        15px;
+  margin:       auto;
+  padding:      10px;
+  font-family:  Arial, Helvetica, sans-serif;
+  font-size:    11px;
+  background:   #ffb;
+  opacity:      .8;
+  border:       solid 1px lightgrey;
+}
+
+* html #watch_box
+{
+  position:     absolute;
+  filter:       alpha(opacity=80);
+}
+
+#watch_box h1
+{
+  font-size:    11px;
+  font-weight:  bold;
+}
+
+#progress_container
+{
+  position:     relative;
+  top:          0;
+  left:         0;
+  background:   #aaa;
+  width:        100%;
+  height:       10px;
+  margin:       5px 0;
+}
+
+#progress
+{
+  position:     absolute;
+  top:          0;
+  left:         0;
+  background:   green;
+  width:        0;
+  height:       10px;
+}
+
+#progress_container .page_marker
+{
+  position:     absolute;
+  top:          0;
+  background:   black;
+  width:        4px;
+  height:       10px;
+  border-bottom:solid 1px grey;
+  border-left:  solid 1px grey;
+  border-right: solid 1px grey;
+  cursor:       pointer;
+}
+
+#progress_container .page_marker.reload
+{
+  background: purple;
+}
+
+#progress_container .page_marker.post
+{
+  background: orange;
+}
+
+#playback_controls a
+{
+  font-weight: bold;
+  color: black;
+}
+
+#playback_controls img
+{
+  padding-left: 10px;
+  border: medium none;
+}

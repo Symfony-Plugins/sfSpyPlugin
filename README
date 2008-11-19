@@ -1,0 +1,198 @@
+= sfSpyPlugin - Watch, Record, and Playback what users what users do with your application =
+
+== Overview ==
+
+sfSpyPlugin allows you to watch, record, and playback what users of your symfony application do. You get to see exactly the same pages as the users see, either live (while users are connected to your application) or afterwards.
+
+There are several reasons why you would like to see what users do with your application:
+
+ - Improve the usability by doing live user testing
+ - Make online help easier by actually seeing where users have problems
+ - Record real-life scenarios for stress and regression testing
+ - Monitor a particular user, or a particular section of your website that you are not sure about
+
+This plugin doesn't record the requests and play them again - that would cause problems with the underlying data. It records the actual HTML code of every page a user sees, and allows you to browse in these pages with a VCR-like interface, witha a timeline and playback control.
+
+sfSpyPlugin makes it easy to pick a user currently using the application and watch the pages he is browsing live. It also allows to trigger the recording of browsing sessions on a certain section of an application, and replay these sessions later.
+
+== Prerequisites ==
+
+sfSpyPlugin only works on symfony 1.0 applications. You also need:
+ * [http://jquery.com jQuery]: A JavaScript library (alternative to Prototype)
+ * PHP 5.2: This plugin requires the JSON functions available as of PHP 5.2 only
+
+In addition, if you want to see the list of the users browsing the application, you must use a database session storage (`sfMySqlSessionStorage`, `sfPostgreSQLSessionStorage`, `sfPDOSessionStorage`, or `sfCreoleSessionStorage`). The database session storage is defined in the `factories.yml`.
+
+== Installation ==
+ 
+ 1 - Install the plugin.
+ 
+ The easiest way to install `sfSpyPlugin` is to use the symfony command line:
+{{{
+$ php symfony plugin-install http://plugins.symfony-project.com/sfSpyPlugin
+}}}
+
+ Alternatively, if you don't have PEAR installed, you can download the latest package attached to this plugin's wiki page and extract it under your project's `plugins/` directory. You will also have to copy the contents of the `myproject/plugins/sfSpyPlugin/web/` directory into a `myproject/web/sfSpyPlugin/` directory.
+
+ 2 - Build the data structures
+ 
+ Rebuild the model and generate the SQL code for the new tables:
+{{{
+$ php symfony propel-build-model
+$ php symfony propel-build-sql
+}}}
+
+ Create the new tables in your database. Use the generated `data/sql/plugins.sfSpyPlugin.lib.model.schema.sql` file for that. For instance, with MySQL:
+{{{
+$ mysql -uroot -p mydb < data/sql/plugins.sfSpyPlugin.lib.model.schema.sql
+}}}
+
+ 3 - Configure your project to use the plugin features
+
+ Enable the `sfSpyListen` module in your frontend application, via the `settings.yml` file.
+{{{
+// in myproject/apps/frontend/config/settings.yml
+all:
+  .settings:
+    enabled_modules:        [default, sfSpyListen]
+}}}
+
+ Enable the `sfSpy` module in your backend application, via the `settings.yml` file.
+{{{
+// in myproject/apps/backend/config/settings.yml
+all:
+  .settings:
+    enabled_modules:        [default, sfSpy]
+}}}
+
+ Enable the `sfSpyFilter` filter in your frontend application, via the `filters.yml` file:
+{{{
+// in myproject/apps/frontend/config/filters.yml
+rendering: ~
+web_debug: ~
+security:  ~
+
+# generally, you will want to insert your own filters here
+sf_spy:
+  class: sfSpyFilter
+
+cache:     ~
+common:    ~
+flash:     ~
+execution: ~
+}}}
+
+ Optionally, if you didn't enable database session storage yet, you can edit the frontend `factories.yml` in the following way:
+{{{
+// in myproject/apps/frontend/config/factories.yml
+all:
+  storage:
+    class: sfMySQLSessionStorage
+    param:
+      database: propel
+      db_table: sf_spy_session
+}}} 
+
+ Enable the sfSpy features and configure the path to the jQuery assets in the `app.yml` file:
+{{{
+// in myproject/config/app.yml
+all:
+  sfSpyPlugin:
+    enabled:     true
+    include_jQuery: true
+    jQuery_path: '/js/jquery-1.2.1.pack.js'
+}}}
+
+ 4 - Clear the cache to enable the autoloading to find the new classes:
+{{{
+$ php symfony cc
+}}}
+
+ 5 - You can now start using the plugin by browsing to the backend module's default page:
+{{{ 
+http://myproject/backend_dev.php/sfSpy
+}}}
+
+If you have only one application, use the `frontend_dev.php` front controller instead.
+
+== Usage ==
+
+The plugin offers two possible uses: 
+ - watch a browsing session live (and don't keep any data about it)
+ - record a browsing session (and possibly watch it at the same time)
+
+The only difference between the two is the fact that the first one is declared ''live''.
+
+=== Watching live or recording ===
+
+There are two ways to start a session record: via the backend interface or the API.
+
+From the backend interface (`http://myproject/backend_dev.php/sfSpy`), click on "View Current Sessions" button and pick one. Click on the "Watch live" button to see where the user is, and switch to a recording if this user browsing session is interesting. Don't forget to stop the recording when you're done.
+
+If you want to trigger the record of a session from a certain place (e.g., when users enter a particular module, or when a particular user logs in), you can use the `sfSpyObserverPeer` methods:
+
+{{{
+sfSpyObserverPeer::startObserver(session_id(), false, "Browsing session on MyModule", 60 * 5);
+}}}
+
+The `startObserver` static method requires a session id as first parameter. The next three parameters are optional:
+ - The second parameter determines if the observer is live or not (false by default).
+ - The third parameter defines a name for the browsing session, which will make it easier to find it afterwards for playback.
+ - The last parameter is a number of seconds after which the observer will stop automatically.
+
+If you don't set the last parameter of the `startObserver()` method, don't forget to manually stop the recording:
+{{{
+sfSpyObserverPeer::stopObserver(session_id());
+}}}
+
+=== Replaying a recorded session ===
+
+The home page of the backend interface (`http://myproject/backend_dev.php/sfSpy`) lists the recorded sessions. Pick one and choose the "Replay" button to have a playback of the user session.
+
+The Replay page will give you VCR-like controls to navigate in the session (pause, forward, backward, rewind, etc.).
+
+=== Plugin configuration ===
+
+You can configure some of the plugin parameters in the `app.yml` file:
+{{{
+all:
+  sfSpyPlugin:
+    enabled:         true
+    include_jQuery:  true            # Whether or not the recorder must add jQuery to the response
+    jQuery_path:     '/js/jquery.js' # Path to the jQuery Javascript file
+    replay_speed:    2               # Playback speed. 1 = same as record speed, 2 = twice as fast, etc.
+    record_post:     true            # Whether or not to record POST events
+    post_visibility: 2               # Duration after which POST data disappear (in seconds)
+}}}
+
+== Limitations ==
+
+The plugin currently has some limitations. It does not record nor replay:
+ - Ajax requests
+ - Client-side effects
+
+Besides, the plugin sees frames and iframes as normal pages and will display them in the entire window. So applications using frames or iframes can't use sfSpyPlugin.
+
+The plugin detects navigation on the client side via the browser history (Back and Forward buttons) in IE and Firefox, but not Opera.
+
+== TODO ==
+
+ * Watch a random session
+ * Automatically close active observers not being updated for $session_timeout
+ * Save client info on observer (browser model, IP/country, preferred languages)
+ * Catch and report mouse position
+ * Catch and Report visible window portion
+ * Catch and report form entry (with listener on all input 'change' events?)
+ * Catch and report click (with event bubbling?)
+ 
+== Changelog ==
+
+=== 2008-05-20 | Trunk ==
+
+ * francois: Catch and report post requests
+ * francois: Made the backend module customizable
+ * francois: Made jQuery inclusion optional
+
+=== 2008-01-03 | 0.9.0 Beta ===
+
+ * francois: Initial release

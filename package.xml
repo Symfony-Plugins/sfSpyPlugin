@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.1" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+  <name>sfSpyPlugin</name>
+  <channel>pear.symfony-project.com</channel>
+  <summary>Watch, Record, and Playback what users what users do with your application</summary>
+  <description>sfSpyPlugin allows you to watch, record, and playback what users of your symfony application do. You get to see exactly the same pages as the users see, either live (while users are connected to your application) or afterwards.</description>
+  <lead>
+   <name>Francois Zaninotto</name>
+   <user>fzaninotto</user>
+   <email>francois.zaninotto@symfony-project.com</email>
+   <active>yes</active>
+  </lead>
+  <date>2008-01-03</date>
+  <version>
+    <release>0.9.0</release>
+    <api>0.9.0</api>
+  </version>
+  <stability>
+    <release>beta</release>
+    <api>beta</api>
+  </stability>
+  <license uri="http://www.symfony-project.com/license">MIT license</license>
+  <notes>-</notes>
+  <contents>
+    <dir name="/">
+      <dir name="config">
+        <file name="schema.yml" role="data"/>
+      </dir>
+      <dir name="lib">
+        <dir name="model">
+          <dir name="map">
+            <file name="sfSpyEventMapBuilder.php" role="data"/>
+            <file name="sfSpyObserverMapBuilder.php" role="data"/>
+            <file name="sfSpyPageMapBuilder.php" role="data"/>
+            <file name="sfSpySessionMapBuilder.php" role="data"/>
+          </dir>
+          <dir name="om">
+            <file name="BasesfSpyEvent.php" role="data"/>
+            <file name="BasesfSpyEventPeer.php" role="data"/>
+            <file name="BasesfSpyObserver.php" role="data"/>
+            <file name="BasesfSpyObserverPeer.php" role="data"/>
+            <file name="BasesfSpyPage.php" role="data"/>
+            <file name="BasesfSpyPagePeer.php" role="data"/>
+            <file name="BasesfSpySession.php" role="data"/>
+            <file name="BasesfSpySessionPeer.php" role="data"/>
+          </dir>
+          <file name="sfSpyEvent.php" role="data"/>
+          <file name="sfSpyEventPeer.php" role="data"/>
+          <file name="sfSpyObserver.php" role="data"/>
+          <file name="sfSpyObserverPeer.php" role="data"/>
+          <file name="sfSpyPage.php" role="data"/>
+          <file name="sfSpyPagePeer.php" role="data"/>
+          <file name="sfSpySession.php" role="data"/>
+          <file name="sfSpySessionPeer.php" role="data"/>
+        </dir>
+        <file name="sfSpyFilter.class.php" role="data"/>
+      </dir>
+      <file name="LICENSE" role="data"/>
+      <dir name="modules">
+        <dir name="sfSpy">
+          <dir name="actions">
+            <file name="actions.class.php" role="data"/>
+          </dir>
+          <dir name="config">
+            <file name="generator.yml" role="data"/>
+            <file name="view.yml" role="data"/>
+          </dir>
+          <dir name="templates">
+            <file name="_events.php" role="data"/>
+            <file name="_replay_control.php" role="data"/>
+            <file name="getLatestEventSuccess.php" role="data"/>
+            <file name="listSessionsSuccess.php" role="data"/>
+            <file name="replaySuccess.php" role="data"/>
+            <file name="watchLiveSuccess.php" role="data"/>
+          </dir>
+        </dir>
+        <dir name="sfSpyListen">
+          <dir name="actions">
+            <file name="actions.class.php" role="data"/>
+          </dir>
+        </dir>
+      </dir>
+      <file name="README" role="data"/>
+      <dir name="web">
+        <dir name="css">
+          <file name="watch.css" role="data"/>
+        </dir>
+        <dir name="images">
+          <file name="control_eject_blue.png" role="data"/>
+          <file name="control_fastforward_blue.png" role="data"/>
+          <file name="control_pause_blue.png" role="data"/>
+          <file name="control_play_blue.png" role="data"/>
+          <file name="control_rewind_blue.png" role="data"/>
+          <file name="control_start_blue.png" role="data"/>
+          <file name="film.png" role="data"/>
+          <file name="film_delete.png" role="data"/>
+          <file name="film_edit.png" role="data"/>
+          <file name="film_go.png" role="data"/>
+          <file name="page_white_camera.png" role="data"/>
+          <file name="page_white_go.png" role="data"/>
+          <file name="page_white_magnify.png" role="data"/>
+        </dir>
+        <dir name="js">
+          <file name="listen.js" role="data"/>
+          <file name="replay.js" role="data"/>
+          <file name="watch.js" role="data"/>
+        </dir>
+      </dir>
+    </dir>
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.1.0</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.1</min>
+      </pearinstaller>
+      <package>
+        <name>sfSpyPlugin</name>
+        <channel>pear.symfony-project.com</channel>
+        <min>0.8.1</min>
+        <max>1.1.0</max>
+        <exclude>1.1.0</exclude>
+      </package>
+      <package>
+       <name>symfony</name>
+       <channel>pear.symfony-project.com</channel>
+       <min>1.0.0</min>
+       <max>1.1.0</max>
+       <exclude>1.1.0</exclude>
+      </package>
+    </required>
+  </dependencies>
+  <phprelease>
+ </phprelease>
+  <changelog>
+ </changelog>
+</package>

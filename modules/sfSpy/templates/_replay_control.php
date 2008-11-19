@@ -1,0 +1,1 @@
+<a href="#" onclick="<?php echo $function ?>();return false;"><?php echo image_tag('/sfSpyPlugin/images/control_'.$image.'_blue.png', array('alt' => __($name), 'title' => __($name), 'align' => 'absbottom')) ?> <?php echo __($name) ?></a>

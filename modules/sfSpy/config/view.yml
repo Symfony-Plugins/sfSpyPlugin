@@ -1,0 +1,8 @@
+watchLiveSuccess:
+  layout: false
+
+replaySuccess:
+  layout: false
+  
+getLatestEventSuccess:
+  layout: false
