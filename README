@@ -187,8 +187,9 @@ The plugin detects navigation on the client side via the browser history (Back a
  
 == Changelog ==
 
-=== 2008-05-20 | Trunk ==
+=== 2009-06-02 | Trunk ==
 
+ * francois: Refactored `sfSpyFilter` to ease customization
  * francois: Catch and report post requests
  * francois: Made the backend module customizable
  * francois: Made jQuery inclusion optional

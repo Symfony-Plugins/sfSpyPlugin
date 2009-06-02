@@ -17,6 +17,13 @@
  */
 class sfSpyFilter extends sfFilter
 {
+  protected function haveToExecute()
+  {
+    return $this->isFirstCall() 
+      && sfConfig::get('app_sfSpyPlugin_enabled', false)
+      && strpos($this->getContext()->getRequest()->getParameter('module'), 'sfSpy') === false;
+  }
+  
   /**
    * Executes this filter.
    *
@@ -24,10 +31,7 @@ class sfSpyFilter extends sfFilter
    */
   public function execute($filterChain)
   { 
-    $haveToExecute = 
-       $this->isFirstCall() 
-    && sfConfig::get('app_sfSpyPlugin_enabled', false)
-    && strpos($this->getContext()->getRequest()->getParameter('module'), 'sfSpy') === false;
+    $haveToExecute = $this->haveToExecute();
     
     $filterChain->execute();
     
